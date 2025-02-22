@@ -28,10 +28,16 @@ def allowed_file(filename):
     """Verifica se il file ha un'estensione consentita."""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+from flask import Flask, request, send_file, jsonify, render_template
+import os
+from werkzeug.utils import secure_filename
+from reportlab.pdfgen import canvas
+
+app = Flask(__name__, template_folder="templates")
+
 @app.route('/')
 def index():
-    """Homepage con messaggio di benvenuto."""
-    return "<h1>Benvenuto! Il server Flask è attivo 🎉</h1><p>Carica i tuoi documenti separatamente.</p>"
+    return render_template('index.html')
 
 @app.route('/upload/<document_type>', methods=['POST'])
 def upload_file(document_type):
